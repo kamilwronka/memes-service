@@ -5,8 +5,6 @@ import { AppModule } from './app.module';
 import * as config from '../package.json';
 
 async function bootstrap() {
-  console.log(process.env);
-
   const app = await NestFactory.create(AppModule);
 
   const options = new DocumentBuilder()
