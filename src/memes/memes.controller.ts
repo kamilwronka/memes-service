@@ -3,10 +3,15 @@ import { MemesService } from './memes.service';
 
 @Controller('memes')
 export class MemesController {
-    constructor(private memesService: MemesService) {}
+  constructor(private memesService: MemesService) {}
 
-    @Get()
-    getMemes() {
-        return this.memesService.find()
-    }
+  @Get()
+  getMemes() {
+    return this.memesService.find();
+  }
+
+  @Get('/presignedUrl')
+  getPresignedUrl() {
+    return this.memesService.getPresignedUrl();
+  }
 }
