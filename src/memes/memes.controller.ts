@@ -5,14 +5,17 @@ import {
   HttpStatus,
   Post,
   Query,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { GetPresignedUrlDto } from './dto/getPresignedUrl.dto';
 import { GetMemesQueryDto } from './dto/getMemesQuery.dto';
 import { MemesService } from './memes.service';
 import { CreateMemeDto } from './dto/createMeme.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('')
 export class MemesController {
@@ -20,11 +23,13 @@ export class MemesController {
 
   @ApiTags('memes-service')
   @Get('memes')
-  getMemes(@Query() query: GetMemesQueryDto) {
+  async getMemes(@Query() query: GetMemesQueryDto, @Req() req) {
     return this.memesService.find(query);
   }
 
   @ApiTags('memes-service')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Post('create')
   async createMeme(
     @Body() createMemeBody: CreateMemeDto,

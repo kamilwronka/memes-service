@@ -7,11 +7,6 @@ import { ConfigService } from '@nestjs/config';
 import { GetMemesQueryDto } from './dto/getMemesQuery.dto';
 import { CreateMemeDto } from './dto/createMeme.dto';
 
-const projectId = 'decent-line-296513';
-
-const datastore = new Datastore({ projectId });
-const storage = new Storage({ projectId });
-
 @Injectable()
 export class MemesService {
   datastore: Datastore;
@@ -35,7 +30,7 @@ export class MemesService {
   }
 
   async find({ pageSize, page }: GetMemesQueryDto) {
-    const memesQuery = datastore
+    const memesQuery = this.datastore
       .createQuery(this.memesKind)
       .order('timestamp', { descending: true })
       .limit(parseInt(pageSize));
@@ -61,7 +56,7 @@ export class MemesService {
 
     console.log(entity);
 
-    const response = await datastore.save(entity);
+    const response = await this.datastore.save(entity);
 
     return response;
   }

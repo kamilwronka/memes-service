@@ -10,6 +10,7 @@ import { MemesModule } from './memes/memes.module';
     MemesModule,
     ConfigModule.forRoot({
       load: [configuration],
+      envFilePath: '.env',
     }),
   ],
   controllers: [AppController],
