@@ -9,7 +9,7 @@ import { MemesModule } from './memes/memes.module';
   imports: [
     MemesModule,
     ConfigModule.forRoot({
-      load: [configuration],
+      load: [async () => await configuration()],
       envFilePath: '.env',
     }),
   ],

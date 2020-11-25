@@ -3,10 +3,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 import * as config from '../package.json';
-import { ValidationPipe } from '@nestjs/common';
-import configuration from './config/configuration';
+import { Logger, ValidationPipe } from '@nestjs/common';
+import configuration, { initializeConfig } from './config/configuration';
 
 async function bootstrap() {
+  await initializeConfig();
   const apiConfig = configuration();
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('memes-service');
@@ -25,6 +26,10 @@ async function bootstrap() {
   });
   SwaggerModule.setup('memes-service/swagger', app, document);
 
-  await app.listen(apiConfig.port);
+  await app.listen(apiConfig.port, () => {
+    Logger.log(
+      `Memes service is running on port ${apiConfig.port}, press Ctrl+C to exit.`,
+    );
+  });
 }
 bootstrap();
